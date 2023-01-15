@@ -8,6 +8,16 @@ using System.Web.Http;
 
 namespace CoffeeBank.Controllers.API
 {
+    public class PayModel
+    {
+        public string cartNumber { get; set; }
+        public string ReqMon { get; set; }
+        public string ReqYear { get; set; }
+        public string cvc { get; set; }
+        public decimal Price { get; set; }
+        public string SaticiKodu { get; set; }
+        public string SaticiSifre { get; set; }
+    }
     public class PayController : ApiController
     {
         CoffeBank_DBEntities db = new CoffeBank_DBEntities();
@@ -24,28 +34,28 @@ namespace CoffeeBank.Controllers.API
         }
 
         // POST: api/Pay
-        public string Post(string SaticiKodu, string SaticiSifre, string KartNo, string SonkullanmaAy, string SonKullamaYil, string CVCKodu, decimal Bakiye)
+        public string Post(PayModel model)
         {
-            SanalPosMusteriler spm = db.SanalPosMusteriler.FirstOrDefault(x => x.SaticiKodu == SaticiKodu && x.Sifre == SaticiSifre);
+            SanalPosMusteriler spm = db.SanalPosMusteriler.FirstOrDefault(x => x.SaticiKodu == model.SaticiKodu && x.Sifre == model.SaticiSifre);
             if (spm != null)
             {
                 if (spm.IsActive == true)
                 {
-                    Kartlar k = db.Kartlar.FirstOrDefault(x => x.KartNo == KartNo);
+                    Kartlar k = db.Kartlar.FirstOrDefault(x => x.KartNo == model.cartNumber);
                     if (k != null)
                     {
                         if (Convert.ToInt32("20"+k.SonKullanmaYil) >= Convert.ToInt32(DateTime.Now.Year))
                         {
                             if (Convert.ToInt32(k.SonKullanmaAy) >= Convert.ToInt32(DateTime.Now.Month))
                             {
-                                if (k.CVCKodu == CVCKodu)
+                                if (k.CVCKodu == model.cvc)
                                 {
                                     if (k.Hesaplar.IsActive == true)
                                     {
-                                        if (k.Hesaplar.Bakiye >= Bakiye)
+                                        if (k.Hesaplar.Bakiye >= model.Price)
                                         {
                                             Hesaplar h = db.Hesaplar.Find(k.Hesap_ID);
-                                            h.Bakiye -= Bakiye;
+                                            h.Bakiye -= model.Price;
                                             db.SaveChanges();
                                             return "101";
                                         }
