@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="CoffeBank_DBModelStoreContainer" CdmEntityContainer="CoffeBank_DBEntities">
+    <EntitySetMapping Name="Hesaplar">
+      <EntityTypeMapping TypeName="CoffeBank_DBModel.Hesaplar">
+        <MappingFragment StoreEntitySet="Hesaplar">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Musteri_ID" ColumnName="Musteri_ID" />
+          <ScalarProperty Name="IBAN" ColumnName="IBAN" />
+          <ScalarProperty Name="Bakiye" ColumnName="Bakiye" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Kartlar">
+      <EntityTypeMapping TypeName="CoffeBank_DBModel.Kartlar">
+        <MappingFragment StoreEntitySet="Kartlar">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Hesap_ID" ColumnName="Hesap_ID" />
+          <ScalarProperty Name="KartNo" ColumnName="KartNo" />
+          <ScalarProperty Name="SonKullanmaAy" ColumnName="SonKullanmaAy" />
+          <ScalarProperty Name="SonKullanmaYil" ColumnName="SonKullanmaYil" />
+          <ScalarProperty Name="CVCKodu" ColumnName="CVCKodu" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Musteriler">
+      <EntityTypeMapping TypeName="CoffeBank_DBModel.Musteriler">
+        <MappingFragment StoreEntitySet="Musteriler">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Isim" ColumnName="Isim" />
+          <ScalarProperty Name="Soyisim" ColumnName="Soyisim" />
+          <ScalarProperty Name="DogumTarihi" ColumnName="DogumTarihi" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SanalPosMusteriler">
+      <EntityTypeMapping TypeName="CoffeBank_DBModel.SanalPosMusteriler">
+        <MappingFragment StoreEntitySet="SanalPosMusteriler">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="FirmaAdi" ColumnName="FirmaAdi" />
+          <ScalarProperty Name="SaticiKodu" ColumnName="SaticiKodu" />
+          <ScalarProperty Name="Sifre" ColumnName="Sifre" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CoffeBank_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Hesaplar">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Musteri_ID" Type="int" />
+    <Property Name="IBAN" Type="nvarchar" MaxLength="50" />
+    <Property Name="Bakiye" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="IsActive" Type="bit" />
+  </EntityType>
+  <EntityType Name="Kartlar">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Hesap_ID" Type="int" />
+    <Property Name="KartNo" Type="nvarchar" MaxLength="16" />
+    <Property Name="SonKullanmaAy" Type="nvarchar" MaxLength="2" />
+    <Property Name="SonKullanmaYil" Type="nvarchar" MaxLength="2" />
+    <Property Name="CVCKodu" Type="nvarchar" MaxLength="4" />
+  </EntityType>
+  <EntityType Name="Musteriler">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Isim" Type="nvarchar" MaxLength="50" />
+    <Property Name="Soyisim" Type="nvarchar" MaxLength="50" />
+    <Property Name="DogumTarihi" Type="date" />
+    <Property Name="IsActive" Type="bit" />
+  </EntityType>
+  <EntityType Name="SanalPosMusteriler">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirmaAdi" Type="nvarchar" MaxLength="500" />
+    <Property Name="SaticiKodu" Type="nvarchar" MaxLength="12" />
+    <Property Name="Sifre" Type="nvarchar" MaxLength="10" />
+    <Property Name="IsActive" Type="bit" />
+  </EntityType>
+  <Association Name="fk_hesapMusteri">
+    <End Role="Musteriler" Type="Self.Musteriler" Multiplicity="0..1" />
+    <End Role="Hesaplar" Type="Self.Hesaplar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Musteriler">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Hesaplar">
+        <PropertyRef Name="Musteri_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_kartHesap">
+    <End Role="Hesaplar" Type="Self.Hesaplar" Multiplicity="0..1" />
+    <End Role="Kartlar" Type="Self.Kartlar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Hesaplar">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Kartlar">
+        <PropertyRef Name="Hesap_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="CoffeBank_DBModelStoreContainer">
+    <EntitySet Name="Hesaplar" EntityType="Self.Hesaplar" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Kartlar" EntityType="Self.Kartlar" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Musteriler" EntityType="Self.Musteriler" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SanalPosMusteriler" EntityType="Self.SanalPosMusteriler" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="fk_hesapMusteri" Association="Self.fk_hesapMusteri">
+      <End Role="Musteriler" EntitySet="Musteriler" />
+      <End Role="Hesaplar" EntitySet="Hesaplar" />
+    </AssociationSet>
+    <AssociationSet Name="fk_kartHesap" Association="Self.fk_kartHesap">
+      <End Role="Hesaplar" EntitySet="Hesaplar" />
+      <End Role="Kartlar" EntitySet="Kartlar" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

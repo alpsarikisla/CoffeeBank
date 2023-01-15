@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CoffeBank_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Hesaplar">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Musteri_ID" Type="int" />
+          <Property Name="IBAN" Type="nvarchar" MaxLength="50" />
+          <Property Name="Bakiye" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="Kartlar">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Hesap_ID" Type="int" />
+          <Property Name="KartNo" Type="nvarchar" MaxLength="16" />
+          <Property Name="SonKullanmaAy" Type="nvarchar" MaxLength="2" />
+          <Property Name="SonKullanmaYil" Type="nvarchar" MaxLength="2" />
+          <Property Name="CVCKodu" Type="nvarchar" MaxLength="4" />
+        </EntityType>
+        <EntityType Name="Musteriler">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Isim" Type="nvarchar" MaxLength="50" />
+          <Property Name="Soyisim" Type="nvarchar" MaxLength="50" />
+          <Property Name="DogumTarihi" Type="date" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="SanalPosMusteriler">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirmaAdi" Type="nvarchar" MaxLength="500" />
+          <Property Name="SaticiKodu" Type="nvarchar" MaxLength="12" />
+          <Property Name="Sifre" Type="nvarchar" MaxLength="10" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <Association Name="fk_hesapMusteri">
+          <End Role="Musteriler" Type="Self.Musteriler" Multiplicity="0..1" />
+          <End Role="Hesaplar" Type="Self.Hesaplar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Musteriler">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Hesaplar">
+              <PropertyRef Name="Musteri_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_kartHesap">
+          <End Role="Hesaplar" Type="Self.Hesaplar" Multiplicity="0..1" />
+          <End Role="Kartlar" Type="Self.Kartlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hesaplar">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Kartlar">
+              <PropertyRef Name="Hesap_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CoffeBank_DBModelStoreContainer">
+          <EntitySet Name="Hesaplar" EntityType="Self.Hesaplar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kartlar" EntityType="Self.Kartlar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Musteriler" EntityType="Self.Musteriler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SanalPosMusteriler" EntityType="Self.SanalPosMusteriler" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_hesapMusteri" Association="Self.fk_hesapMusteri">
+            <End Role="Musteriler" EntitySet="Musteriler" />
+            <End Role="Hesaplar" EntitySet="Hesaplar" />
+          </AssociationSet>
+          <AssociationSet Name="fk_kartHesap" Association="Self.fk_kartHesap">
+            <End Role="Hesaplar" EntitySet="Hesaplar" />
+            <End Role="Kartlar" EntitySet="Kartlar" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CoffeBank_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Hesaplar">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Musteri_ID" Type="Int32" />
+          <Property Name="IBAN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Bakiye" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Musteriler" Relationship="Self.fk_hesapMusteri" FromRole="Hesaplar" ToRole="Musteriler" />
+          <NavigationProperty Name="Kartlar" Relationship="Self.fk_kartHesap" FromRole="Hesaplar" ToRole="Kartlar" />
+        </EntityType>
+        <EntityType Name="Kartlar">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Hesap_ID" Type="Int32" />
+          <Property Name="KartNo" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="SonKullanmaAy" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="SonKullanmaYil" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="CVCKodu" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Hesaplar" Relationship="Self.fk_kartHesap" FromRole="Kartlar" ToRole="Hesaplar" />
+        </EntityType>
+        <EntityType Name="Musteriler">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Isim" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Soyisim" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DogumTarihi" Type="DateTime" Precision="0" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Hesaplar" Relationship="Self.fk_hesapMusteri" FromRole="Musteriler" ToRole="Hesaplar" />
+        </EntityType>
+        <EntityType Name="SanalPosMusteriler">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirmaAdi" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SaticiKodu" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="Sifre" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
+        <Association Name="fk_hesapMusteri">
+          <End Role="Musteriler" Type="Self.Musteriler" Multiplicity="0..1" />
+          <End Role="Hesaplar" Type="Self.Hesaplar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Musteriler">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Hesaplar">
+              <PropertyRef Name="Musteri_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_kartHesap">
+          <End Role="Hesaplar" Type="Self.Hesaplar" Multiplicity="0..1" />
+          <End Role="Kartlar" Type="Self.Kartlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hesaplar">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Kartlar">
+              <PropertyRef Name="Hesap_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CoffeBank_DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Hesaplar" EntityType="Self.Hesaplar" />
+          <EntitySet Name="Kartlar" EntityType="Self.Kartlar" />
+          <EntitySet Name="Musteriler" EntityType="Self.Musteriler" />
+          <EntitySet Name="SanalPosMusteriler" EntityType="Self.SanalPosMusteriler" />
+          <AssociationSet Name="fk_hesapMusteri" Association="Self.fk_hesapMusteri">
+            <End Role="Musteriler" EntitySet="Musteriler" />
+            <End Role="Hesaplar" EntitySet="Hesaplar" />
+          </AssociationSet>
+          <AssociationSet Name="fk_kartHesap" Association="Self.fk_kartHesap">
+            <End Role="Hesaplar" EntitySet="Hesaplar" />
+            <End Role="Kartlar" EntitySet="Kartlar" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CoffeBank_DBModelStoreContainer" CdmEntityContainer="CoffeBank_DBEntities">
+          <EntitySetMapping Name="Hesaplar">
+            <EntityTypeMapping TypeName="CoffeBank_DBModel.Hesaplar">
+              <MappingFragment StoreEntitySet="Hesaplar">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Musteri_ID" ColumnName="Musteri_ID" />
+                <ScalarProperty Name="IBAN" ColumnName="IBAN" />
+                <ScalarProperty Name="Bakiye" ColumnName="Bakiye" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kartlar">
+            <EntityTypeMapping TypeName="CoffeBank_DBModel.Kartlar">
+              <MappingFragment StoreEntitySet="Kartlar">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Hesap_ID" ColumnName="Hesap_ID" />
+                <ScalarProperty Name="KartNo" ColumnName="KartNo" />
+                <ScalarProperty Name="SonKullanmaAy" ColumnName="SonKullanmaAy" />
+                <ScalarProperty Name="SonKullanmaYil" ColumnName="SonKullanmaYil" />
+                <ScalarProperty Name="CVCKodu" ColumnName="CVCKodu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Musteriler">
+            <EntityTypeMapping TypeName="CoffeBank_DBModel.Musteriler">
+              <MappingFragment StoreEntitySet="Musteriler">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Isim" ColumnName="Isim" />
+                <ScalarProperty Name="Soyisim" ColumnName="Soyisim" />
+                <ScalarProperty Name="DogumTarihi" ColumnName="DogumTarihi" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SanalPosMusteriler">
+            <EntityTypeMapping TypeName="CoffeBank_DBModel.SanalPosMusteriler">
+              <MappingFragment StoreEntitySet="SanalPosMusteriler">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FirmaAdi" ColumnName="FirmaAdi" />
+                <ScalarProperty Name="SaticiKodu" ColumnName="SaticiKodu" />
+                <ScalarProperty Name="Sifre" ColumnName="Sifre" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
